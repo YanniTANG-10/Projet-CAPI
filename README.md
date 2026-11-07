@@ -32,7 +32,7 @@ python3 gui.py
 
 ## Format du backlog JSON
 
-les fichiers d’exemple : exemple/backlog.json
+les fichiers d’exemple : exemples/backlog.json
 
 ## Organisation du code
 
