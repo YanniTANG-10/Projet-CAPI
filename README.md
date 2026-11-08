@@ -6,6 +6,8 @@ une application qui permet à une équipe de jouer une partie de planning poker 
 ## Fonctionnalités
 
 - saisie du nombre de joueurs et de leurs pseudos
+- chargement d’un backlog JSON
+- affichage des fonctionnalités.
 
 ## Prérequis
 
@@ -25,16 +27,21 @@ python3 gui.py
 ## Utilisation
 
 1. Saisir le nombre de joueurs et leurs pseudo2.
-2. Cliquer sur <Démarrer la session>.
+2. Choisir ou saisir le chemin du fichier de backlog json.
+3. Cliquer sur <Démarrer la session>.
+
+## Format du backlog JSON
+
+les fichiers d’exemple : exemples/backlog.json
 
 ## Organisation du code
 
 - `gui.py` — [rôle du fichier]
 - `main.py` — [rôle du fichier]
 - `game.py` — [rôle du fichier]
+- `exemples/` — [contenu du dossier]
 
 ## Fonctionnalités à venir
 
-1. Chargement d’un backlog JSON et affichage des fonctionnalités
-2. Choisir la règle de validation.
-3. Vote en mode local
+1. Choisir la règle de validation.
+2. Vote en mode local

@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 
-from game import Session
+from game import Session, load_backlog
 
 
 def read_players() -> list[str]:
@@ -27,9 +27,19 @@ def read_players() -> list[str]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Planning Poker — walking skeleton")
+    parser.add_argument(
+        "backlog",
+        nargs="?",
+        type=Path,
+        default=Path(__file__).resolve().parent / "exemples" / "backlog.json",
+        help="Chemin du backlog JSON (facultatif).",
+    )
+    args = parser.parse_args()
+
     try:
         players = read_players()
-        session = Session(players=players)
+        session = Session(players=players, backlog=load_backlog(args.backlog))
     except ValueError as error:
         print(f"Erreur : {error}")
         return 1
@@ -38,6 +48,8 @@ def main() -> int:
         return 1
 
     print("\nJoueurs : " + ", ".join(session.players))
+    first_feature = session.backlog[0]
+    print(f"Première fonctionnalité : {first_feature['id']} — {first_feature['titre']}")
     return 0
 
 
