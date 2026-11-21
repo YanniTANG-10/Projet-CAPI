@@ -18,7 +18,15 @@ class StrictRule(ValidationRule):
     name = "Unanimité (stricte)"
 
     def is_validated(self, votes: list, round_number: int = 1):
-        raise NotImplementedError  # étape 2 (US-07)
+        if not votes:
+            raise ValueError("Votes non trouvables")
+        else: 
+            for vote in votes:
+                if vote != votes[0]:
+                    differents =True
+                    return None
+        return votes[0]
+
 
 
 class MedianRule(ValidationRule):
