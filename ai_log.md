@@ -5,6 +5,7 @@
 | Outil | Modèle (si connu) | Mode (autocomplétion, chat, agent) |
 | --- | --- | --- |
 | Codex | GPT-6 | agent |
+/Claude Chat/ Sonnet 5.5/ Agent
 
 Fichier d’instructions pour agent versionné (`CLAUDE.md`, `AGENTS.md`…) : non
 
