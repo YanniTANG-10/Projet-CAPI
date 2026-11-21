@@ -3,7 +3,6 @@
 import json
 from dataclasses import dataclass
 from pathlib import Path
-
 minimumOfPlayers = 2
 class ValidationRule:
     """Règle qui décide si les votes d'un tour valident l'estimation."""
@@ -19,7 +18,15 @@ class StrictRule(ValidationRule):
     name = "Unanimité (stricte)"
 
     def is_validated(self, votes: list, round_number: int = 1):
-        raise NotImplementedError  # étape 2 (US-07)
+        if not votes:
+            raise ValueError("Votes non trouvables")
+        else: 
+            for vote in votes:
+                if vote != votes[0]:
+                    differents =True
+                    return None
+        return votes[0]
+
 
 
 class MedianRule(ValidationRule):
@@ -32,10 +39,33 @@ class MedianRule(ValidationRule):
 AVAILABLE_RULES = [StrictRule(), MedianRule()]
 
 
+def get_rule(name: str) -> ValidationRule:
+    for rule in AVAILABLE_RULES:
+        if rule.name == name:
+            return rule
+    raise ValueError(f"Règle inconnue : {name}")
 @dataclass
 class Session:
     players: list[str]
     backlog: list[dict[str, str]]
+    rule: ValidationRule
+
+def validate_player_count(count: int) -> int:
+    if count < minimumOfPlayers:
+        raise ValueError(f"Un minimum de {minimumOfPlayers} joueurs est requis.")
+    return count
+
+
+def validate_players(players: list[str]) -> list[str]:
+    """Vérifie le nombre, les pseudos vides et les doublons."""
+    validate_player_count(len(players))
+    cleaned = [name.strip() for name in players]
+    if any(not name for name in cleaned):
+        raise ValueError("Le pseudo ne peut pas être vide.")
+    if len({name.lower() for name in cleaned}) != len(cleaned):
+        raise ValueError("Les pseudos doivent être uniques.")
+    return cleaned
+
 
 
 def load_backlog(path: Path) -> list[dict[str, str]]:
