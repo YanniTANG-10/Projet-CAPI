@@ -3,27 +3,27 @@
 import argparse
 from pathlib import Path
 
-from game import Session, load_backlog
+from game import AVAILABLE_RULES, Session, load_backlog, validate_player_count, validate_players
 
 
 def read_players() -> list[str]:
     while True:
+        text = input("Nombre de joueurs : ").strip()
+        if not text.isdigit():
+            print("Saisissez un entier.")
+            continue
         try:
-            count = int(input("Nombre de joueurs : "))
-            if count > 1:
-                break
-        except ValueError:
-            pass
-        print("Saisissez un entier supérieur à 1.")
+            count = validate_player_count(int(text))
+            break
+        except ValueError as error:
+            print(error)
 
-    players = []
-    for number in range(1, count + 1):
-        nickname = input(f"Pseudo du joueur {number} : ").strip()
-        while not nickname:
-            print("Le pseudo ne peut pas être vide.")
-            nickname = input(f"Pseudo du joueur {number} : ").strip()
-        players.append(nickname)
-    return players
+    while True:
+        names = [input(f"Pseudo du joueur {n} : ").strip() for n in range(1, count + 1)]
+        try:
+            return validate_players(names)
+        except ValueError as error:
+            print(f"{error} Recommencez.")
 
 
 def main() -> int:
@@ -39,7 +39,11 @@ def main() -> int:
 
     try:
         players = read_players()
-        session = Session(players=players, backlog=load_backlog(args.backlog))
+        session = Session(
+            players=players,
+            backlog=load_backlog(args.backlog),
+            rule=AVAILABLE_RULES[0],
+        )
     except ValueError as error:
         print(f"Erreur : {error}")
         return 1
@@ -48,6 +52,7 @@ def main() -> int:
         return 1
 
     print("\nJoueurs : " + ", ".join(session.players))
+    print(f"Règle : {session.rule.name}")
     first_feature = session.backlog[0]
     print(f"Première fonctionnalité : {first_feature['id']} — {first_feature['titre']}")
     return 0
