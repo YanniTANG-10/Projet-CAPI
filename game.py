@@ -4,6 +4,33 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+minimumOfPlayers = 2
+class ValidationRule:
+    """Règle qui décide si les votes d'un tour valident l'estimation."""
+
+    name = "Règle"
+
+    def is_validated(self, votes: list, round_number: int = 1):
+        """Renvoie l'estimation retenue, ou None si le tour n'est pas validé."""
+        raise NotImplementedError
+
+
+class StrictRule(ValidationRule):
+    name = "Unanimité (stricte)"
+
+    def is_validated(self, votes: list, round_number: int = 1):
+        raise NotImplementedError  # étape 2 (US-07)
+
+
+class MedianRule(ValidationRule):
+    name = "Médiane"
+
+    def is_validated(self, votes: list, round_number: int = 1):
+        raise NotImplementedError  # plus tard
+
+
+AVAILABLE_RULES = [StrictRule(), MedianRule()]
+
 
 @dataclass
 class Session:
