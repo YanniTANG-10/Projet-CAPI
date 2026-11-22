@@ -24,7 +24,6 @@ class TestsGrouped(unittest.TestCase):
     """ test sur une session de vote sur règle stricte où la carte café est jouée au deuxième tour et aucune estimation n'est retenue. """
     def testCA12a(self):
         self.assertIsNone(StrictRule().is_validated([-1,5,5],2)) # -1 signifie la carte cafe
-
     """ test sur une session de vote sur règle stricte où la carte ? est jouée au premier tour et aucune estimation n'est retenue."""
     def testCA06a(self):
         self.assertIsNone(StrictRule().is_validated([-2,5,5],1)) # -2 signifie la carte ?
