@@ -20,20 +20,35 @@ class StrictRule(ValidationRule):
     def is_validated(self, votes: list, round_number: int = 1):
         if not votes:
             raise ValueError("Votes non trouvables")
-        else: 
-            for vote in votes:
-                if vote != votes[0]:
-                    differents =True
-                    return None
-        if not differents: return votes[0]
-
+        for vote in votes:
+            if vote < 0:
+                return None
+        for vote in votes:
+            if vote != votes[0]:
+                return None
+        return votes[0]
 
 
 class MedianRule(ValidationRule):
     name = "Médiane"
 
     def is_validated(self, votes: list, round_number: int = 1):
-        raise NotImplementedError  # plus tard
+        if not votes:
+            raise ValueError("Aucun vote à valider.")
+        for vote in votes:
+            if vote < 0:
+                return None
+        if round_number == 1:
+            for vote in votes:
+                if vote != votes[0]:
+                    return None
+            return votes[0]
+        sorted_votes = sorted(votes)
+        return sorted_votes[len(sorted_votes) // 2]
+
+        
+        
+       
 
 
 AVAILABLE_RULES = [StrictRule(), MedianRule()]
