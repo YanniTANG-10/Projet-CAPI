@@ -35,6 +35,19 @@ Fichier d’instructions pour agent versionné (`CLAUDE.md`, `AGENTS.md`…) : n
 - **Ce que nous avons vérifié** : Codex a contrôlé le chargement normal, le fichier absent, le chemin vers un dossier, le JSON invalide, l’encodage invalide et le backlog vide. Contrôles réussis. Vérification graphique du binôme à compléter.
 - **Ce que nous avons changé ou rejeté, et pourquoi** : remplacement du message système détaillé par des indications permettant de corriger le problème. Le chemin de la capture contenait « baklog.json » au lieu de « backlog.json ».
 
+### 2026-11-15 : Relecture de la logique des règles et de la validation des joueurs (US-01, US-04, US-07)
+- **Demande (résumé fidèle)** : relire `game.py` (règles de validation, `validate_player_count`, `validate_players`).
+- **Résultat** : Quatres remarques : Une erreur de logique qui concernait l'affichage et sortie prématurés de l'étape de verification de l'unanimité;  la détection des doublons utilise `lower()`, donc « Straße » et « STRASSE » passent, `casefold()` les détecterait ; `StrictRule` renvoie `-1` ou `-2` quand tous les joueurs jouent café ou « ? », alors que notre décision dit qu'une carte café force un revote, et aucun test ne le couvre ; un seul vote est validé par `StrictRule` (non bloquant, le minimum de 2 joueurs est garanti en amont).
+- **Ce que nous avons vérifié** : cas limites exécutés par Claude : 1 joueur, 0 et nombre négatif, pseudos vides, doublons avec espaces, majuscules et accents, votes `[5,5,8]`, `[5,5,5]`, `[0,0,0]`, `[5,8,5]`, `[]`. Tous les résultats attendus sont corrects. 
+- **Ce que nous avons changé ou rejeté, et pourquoi** : Après adoption des remarques pertinentes liés à la validation des joueurs ainsi que des règles
+
+### 2026-11-21 : Amélioration visuelle du menu principal (US-04)
+- **Demande (résumé fidèle)** : améliorer uniquement l'apparence de `gui.py` (couleurs, polices, boutons, couleur du message d'état) sans modifier la logique.
+- **Résultat** : nouveau `gui.py` modernisé, une palette de couleurs en constantes, des cartes pour chaque bloc, un bouton principal, et un message d'état coloré (rouge pour une erreur, vert pour une session prête) via une méthode `update_status_color`.
+- **Ce que nous avons vérifié** : Claude a comparé le code des méthodes `show_feature`, `choose_backlog`, `start_session` et `main` avec la version précédente (identiques), vérifié que le fichier se compile et se construit avec un Tkinter simulé, et testé la méthode de couleur sur 5 messages. Claude n'a pas pu afficher la fenêtre. Ma binôme et moi avons vérifiés que nous étions satisfaits du rendu, que rien n'était cassé côté test ou logique en lançant gui.py ainsi que le main.py seulement. 
+- **Ce que nous avons changé ou rejeté, et pourquoi** : N/A
+
+
 ## Bilan (à compléter en séance 4, 3 lignes)
 
 - Nombre d’entrées et de propositions rejetées ou corrigées : à compléter.

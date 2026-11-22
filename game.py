@@ -25,7 +25,7 @@ class StrictRule(ValidationRule):
                 if vote != votes[0]:
                     differents =True
                     return None
-        return votes[0]
+        if not differents: return votes[0]
 
 
 
